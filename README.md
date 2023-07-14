@@ -1,0 +1,2 @@
+# Python Katas
+Coding katas
