@@ -6,9 +6,7 @@ setup(
     description="Python Katas - Coding Katas",
     author="@teaholic",
     long_description_content_type="text/markdown",
-    classifiers=[
-        "Development Status :: 3 - Alpha",
-    ],
+    classifiers=["Development Status :: 3 - Alpha",],
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     python_requires=">=3.8",
