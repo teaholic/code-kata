@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 
 @dataclass(frozen=True)
@@ -9,19 +8,19 @@ class Driver:
 
 
 @dataclass(frozen=True)
-class Race:
-    results = List[Driver]
+class Board:
+    results: set[Driver]
 
 
 class ScoringService:
-    def __init__(self, drivers):
+    def __init__(self, drivers: set[Driver]):
         self.drivers = drivers
         self.points = [25, 18, 15]
 
-    def score(self, race: List[Driver]):
+    def score(self, board: Board):
         return set(
             [
                 Driver(driver.id, driver.points + point)
-                for driver, point in zip(race, self.points)
+                for driver, point in zip(board.results, self.points)
             ]
         )
