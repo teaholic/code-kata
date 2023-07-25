@@ -35,7 +35,7 @@ class DriverService:
         ranked_drivers = list(enumerate(race))
 
         results = []
-        for (rank, driver) in ranked_drivers:
+        for rank, driver in ranked_drivers:
             updated_points = (
                 driver.points + self.points[rank] if len(self.points) > rank else 0
             )
