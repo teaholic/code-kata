@@ -20,11 +20,15 @@ class DriverService:
 
         aggregated_drivers = []
         for driver_id in set([d.id for d in updated_drivers]):
-            filtered_drivers = list(filter(lambda d: d.id==driver_id, updated_drivers))
+            filtered_drivers = list(
+                filter(lambda d: d.id == driver_id, updated_drivers)
+            )
             aggregated_points = sum([driver.points for driver in filtered_drivers])
             aggregated_drivers.append(Driver(id=driver_id, points=aggregated_points))
 
-        ordered_drivers = sorted(aggregated_drivers, key=operator.attrgetter("points"), reverse=True)
+        ordered_drivers = sorted(
+            aggregated_drivers, key=operator.attrgetter("points"), reverse=True
+        )
         return ordered_drivers
 
     def __score_single(self, race: List[Driver]) -> List[Driver]:
@@ -32,7 +36,9 @@ class DriverService:
 
         results = []
         for (rank, driver) in ranked_drivers:
-            updated_points = driver.points + self.points[rank] if len(self.points) > rank else 0
+            updated_points = (
+                driver.points + self.points[rank] if len(self.points) > rank else 0
+            )
             updated_driver = Driver(id=driver.id, points=updated_points)
             results.append(updated_driver)
         return results

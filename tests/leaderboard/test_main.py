@@ -10,10 +10,10 @@ class TestResultService(TestCase):
         service = DriverService()
 
         expected = [
-            Driver("b", 25+25),
-            Driver("a", 18+18),
-            Driver("c", 15+15),
-            Driver("d", 0+0)
+            Driver("b", 25 + 25),
+            Driver("a", 18 + 18),
+            Driver("c", 15 + 15),
+            Driver("d", 0 + 0),
         ]
         actual = service.score(races=[race1, race2])
         self.assertEqual(actual, expected)
