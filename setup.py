@@ -11,5 +11,5 @@ setup(
     packages=find_packages(where="src"),
     python_requires=">=3.9",
     install_requires=[],
-    extras_require={"test": ["tox==3.27.0", "parameterized==0.9.0"]},
+    extras_require={"test": ["tox==3.27.0"]},
 )
