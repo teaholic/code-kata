@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-class ValidMoney(Enum):
+class AcceptedCoins(Enum):
     nickel = 5
     dime = 10
     quarter = 25
@@ -28,10 +28,10 @@ class VendingMachine:
 
     def collect(self, spec: str):
         coin = CoinScale(spec).name
-        if coin in ValidMoney._member_names_:
+        if coin in AcceptedCoins._member_names_:
             try:
-                self.inserted += ValidMoney.__members__[coin].value
+                self.inserted += AcceptedCoins.__members__[coin].value
             except:
-                self.inserted = ValidMoney.__members__[coin].value
+                self.inserted = AcceptedCoins.__members__[coin].value
         else:
             self.returned.append(coin)
