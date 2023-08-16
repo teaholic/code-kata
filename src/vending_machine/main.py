@@ -8,10 +8,10 @@ class ValidMoney(Enum):
 
 
 class CoinScale(Enum):
-    tiny = "penny"
-    mini = "nickel"
-    smaller = "dime"
-    small = "quarter"
+    penny = (1, "tiny")
+    nickel = (2, "mini")
+    dime = (3, "mini")
+    quarter = (4, "small")
 
 
 class VendingMachine:
@@ -19,8 +19,8 @@ class VendingMachine:
         self.inserted = "INSERT COIN"
         self.returned = []
 
-    def collect(self, weight: str):
-        coin = CoinScale.__members__[weight].value
+    def collect(self, spec: str):
+        coin = CoinScale(spec).name
         if coin in ValidMoney._member_names_:
             try:
                 self.inserted += ValidMoney.__members__[coin].value
