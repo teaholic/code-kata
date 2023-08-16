@@ -1,16 +1,16 @@
 from unittest import TestCase
 from parameterized import parameterized
 
-from vending_machine.main import VendingMachine, CoinScale
+from vending_machine.main import VendingMachine, CoinScale, CoinSpec
 
 
 class TestCoinScale(TestCase):
     @parameterized.expand(
         [
-            [(1, "tiny"), "penny"],
-            [(2, "mini"), "nickel"],
-            [(3, "mini"), "dime"],
-            [(4, "small"), "quarter"],
+            [CoinSpec(1, "tiny"), "penny"],
+            [CoinSpec(2, "mini"), "nickel"],
+            [CoinSpec(3, "mini"), "dime"],
+            [CoinSpec(4, "small"), "quarter"],
         ]
     )
     def test_collect(self, spec, expected):
@@ -22,10 +22,10 @@ class TestVendingMachine(TestCase):
 
     @parameterized.expand(
         [
-            [(1, "tiny"), "INSERT COIN", ["penny"]],
-            [(2, "mini"), 5, ["penny"]],
-            [(3, "mini"), 15, ["penny"]],
-            [(4, "small"), 40, ["penny"]],
+            [CoinSpec(1, "tiny"), "INSERT COIN", ["penny"]],
+            [CoinSpec(2, "mini"), 5, ["penny"]],
+            [CoinSpec(3, "mini"), 15, ["penny"]],
+            [CoinSpec(4, "small"), 40, ["penny"]],
         ]
     )
     def test_collect(self, spec, expected_inserted, expected_returned):

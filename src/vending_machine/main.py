@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum
 
 
@@ -7,11 +8,17 @@ class ValidMoney(Enum):
     quarter = 25
 
 
+@dataclass(frozen=True)
+class CoinSpec:
+    weight: int
+    size: str
+
+
 class CoinScale(Enum):
-    penny = (1, "tiny")
-    nickel = (2, "mini")
-    dime = (3, "mini")
-    quarter = (4, "small")
+    penny = CoinSpec(1, "tiny")
+    nickel = CoinSpec(2, "mini")
+    dime = CoinSpec(3, "mini")
+    quarter = CoinSpec(4, "small")
 
 
 class VendingMachine:
