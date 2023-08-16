@@ -13,7 +13,7 @@ class TestCoinScale(TestCase):
             [CoinSpec(4, "small"), "quarter"],
         ]
     )
-    def test_collect(self, spec, expected):
+    def test_get(self, spec, expected):
         self.assertEqual(CoinScale(spec).name, expected)
 
 
