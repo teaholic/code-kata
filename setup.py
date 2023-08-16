@@ -9,7 +9,7 @@ setup(
     classifiers=["Development Status :: 3 - Alpha",],
     package_dir={"": "src"},
     packages=find_packages(where="src"),
-    python_requires=">=3.9",
+    python_requires=">=3.8",
     install_requires=[],
     extras_require={"test": ["tox==3.27.0"]},
 )
