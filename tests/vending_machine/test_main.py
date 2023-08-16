@@ -1,7 +1,20 @@
 from unittest import TestCase
 from parameterized import parameterized
 
-from vending_machine.main import VendingMachine
+from vending_machine.main import VendingMachine, CoinScale
+
+
+class TestCoinScale(TestCase):
+    @parameterized.expand(
+        [
+            ["tiny", "penny"],
+            ["mini", "nickel"],
+            ["smaller", "dime"],
+            ["small", "quarter"],
+        ]
+    )
+    def test_collect(self, weight, expected):
+        self.assertEqual(CoinScale.__members__[weight].value, expected)
 
 
 class TestVendingMachine(TestCase):
@@ -9,10 +22,10 @@ class TestVendingMachine(TestCase):
 
     @parameterized.expand(
         [
-            ["penny", "INSERT COIN", ["penny"]],
-            ["nickel", 5, ["penny"]],
-            ["dime", 15, ["penny"]],
-            ["quarter", 40, ["penny"]],
+            ["tiny", "INSERT COIN", ["penny"]],
+            ["mini", 5, ["penny"]],
+            ["smaller", 15, ["penny"]],
+            ["small", 40, ["penny"]],
         ]
     )
     def test_collect(self, coin, expected_inserted, expected_returned):
