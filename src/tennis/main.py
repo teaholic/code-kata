@@ -11,7 +11,6 @@ class Dashboard:
 
 
 class Umpire:
-
     def find_winner(self, scores: dict) -> str:
         top_scorer = max(scores, key=scores.get)
         opponent = min(scores, key=scores.get)

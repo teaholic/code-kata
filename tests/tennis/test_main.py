@@ -3,7 +3,6 @@ from tennis.main import Dashboard, Umpire, TennisGame
 
 
 class TestDashboard(TestCase):
-
     def test_update(self):
         test_cases = [
             [["1", "1", "1", "2", "1"], {"1": 4, "2": 1}],
@@ -18,14 +17,13 @@ class TestDashboard(TestCase):
 
 
 class TestUmpire(TestCase):
-
     def test_find_winner(self):
         test_cases = [
             [{"1": 4, "2": 1}, "1"],
             [{"1": 3, "2": 5}, "2"],
             [{"1": 6, "2": 4}, "1"],
             [{"1": 3, "2": 1}, "invalid game"],
-            [{"1": 6, "2": 5}, "invalid game"]
+            [{"1": 6, "2": 5}, "invalid game"],
         ]
 
         umpire = Umpire()
@@ -35,14 +33,13 @@ class TestUmpire(TestCase):
 
 
 class TestTennisGame(TestCase):
-
     def test_run(self):
         test_cases = [
             [["1", "1", "1", "2", "1"], "1"],
             [["2", "1", "1", "2", "2", "1", "2", "2"], "2"],
             [["2", "1", "1", "2", "2", "1", "2", "1", "1", "1"], "1"],
             [["a", "b", "a", "a"], "invalid game"],
-            [["2", "1", "1", "2", "2", "1", "2", "1", "1"], "invalid game"]
+            [["2", "1", "1", "2", "2", "1", "2", "1", "1"], "invalid game"],
         ]
 
         for game, expected in test_cases:
