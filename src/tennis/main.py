@@ -1,17 +1,31 @@
+from enum import Enum
+
+
+class Point(Enum):
+    love = 0
+    fifteen = 1
+    thirty = 2
+    forty = 3
+    four = 4
+    five = 5
+    six = 6
+
+
 class Dashboard:
     def __init__(self, game):
         self.game = game
         self.player1, self.player2 = set(game)
-        self.scores = {self.player1: 0, self.player2: 0}
+        self.scores = {self.player1: Point(0), self.player2: Point(0)}
 
     def update(self):
         for match_id in range(len(self.game)):
             match_winner = self.game[match_id]
-            self.scores[match_winner] += 1
+            self.scores[match_winner] = Point(self.scores[match_winner].value + 1)
 
 
 class Umpire:
-    def find_winner(self, scores: dict) -> str:
+    def find_winner(self, dashboard: dict) -> str:
+        scores = {k: v.value for k, v in dashboard.items()}
         top_scorer = max(scores, key=scores.get)
         opponent = min(scores, key=scores.get)
         if scores[top_scorer] >= 4:

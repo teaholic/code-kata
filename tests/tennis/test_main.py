@@ -1,13 +1,29 @@
 from unittest import TestCase
-from tennis.main import Dashboard, Umpire, TennisGame
+from tennis.main import Dashboard, Umpire, TennisGame, Point
+
+
+class TestPoint(TestCase):
+    def test_next(self):
+        test_cases = [
+            [Point.love, Point.fifteen],
+            [Point.fifteen, Point.thirty],
+            [Point.thirty, Point.forty],
+        ]
+
+        for starting_score, expected in test_cases:
+            actual = Point(starting_score.value + 1)
+            self.assertEqual(actual, expected)
 
 
 class TestDashboard(TestCase):
     def test_update(self):
         test_cases = [
-            [["1", "1", "1", "2", "1"], {"1": 4, "2": 1}],
-            [["2", "1", "1", "2", "2", "1", "2", "2"], {"1": 3, "2": 5}],
-            [["2", "1", "1", "2", "2", "1", "2", "1", "1", "1"], {"1": 6, "2": 4}],
+            [["1", "1", "1", "2", "1"], {"1": Point(4), "2": Point(1)}],
+            [["2", "1", "1", "2", "2", "1", "2", "2"], {"1": Point(3), "2": Point(5)}],
+            [
+                ["2", "1", "1", "2", "2", "1", "2", "1", "1", "1"],
+                {"1": Point(6), "2": Point(4)},
+            ],
         ]
 
         for game, expected in test_cases:
@@ -19,11 +35,11 @@ class TestDashboard(TestCase):
 class TestUmpire(TestCase):
     def test_find_winner(self):
         test_cases = [
-            [{"1": 4, "2": 1}, "1"],
-            [{"1": 3, "2": 5}, "2"],
-            [{"1": 6, "2": 4}, "1"],
-            [{"1": 3, "2": 1}, "invalid game"],
-            [{"1": 6, "2": 5}, "invalid game"],
+            [{"1": Point(4), "2": Point(1)}, "1"],
+            [{"1": Point(3), "2": Point(5)}, "2"],
+            [{"1": Point(6), "2": Point(4)}, "1"],
+            [{"1": Point(3), "2": Point(1)}, "invalid game"],
+            [{"1": Point(6), "2": Point(5)}, "invalid game"],
         ]
 
         umpire = Umpire()
