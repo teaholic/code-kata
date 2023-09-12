@@ -1,13 +1,29 @@
+from enum import Enum
+
+
+class Point(Enum):
+    LOVE = 0
+    FIFTEEN = 1
+    THIRTY = 2
+    FORTY = 3
+
+
+class ScoreService:
+    def update(self, point: Point):
+        return Point(point.value + 1)
+
+
 class Dashboard:
     def __init__(self, game):
         self.game = game
         self.player1, self.player2 = set(game)
-        self.scores = {self.player1: 0, self.player2: 0}
+        self.scores = {self.player1: Point(0), self.player2: Point(0)}
+        self.service = ScoreService()
 
     def update(self):
         for match_id in range(len(self.game)):
             match_winner = self.game[match_id]
-            self.scores[match_winner] += 1
+            self.scores[match_winner] = self.service.update(self.scores[match_winner])
 
 
 class Umpire:

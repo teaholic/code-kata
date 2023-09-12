@@ -1,44 +1,27 @@
-from enum import Enum
 from unittest import TestCase
-from tennis.main import Dashboard, Umpire, TennisGame
+from tennis.main import Dashboard, Umpire, TennisGame, Point, ScoreService
 
 
-class Point(Enum):
-    LOVE = 0
-    FIFTEEN = 1
-    THIRTY = 2
-    FORTY = 3
-
-
-class Player:
-    def __init__(self, score: Point):
-        self.score = score
-
-
-class PlayerService:
-    def update(self, player: Player):
-        return Player(score=Point(player.score.value + 1))
-
-
-class TestPlayer(TestCase):
-    def test_add(self):
+class TestScoreService(TestCase):
+    def test_update(self):
         test_cases = [
-            [Player(score=Point(0)), Player(score=Point(1))],
-            [Player(score=Point(1)), Player(score=Point(2))],
+            [Point(0), Point(1)],
+            [Point(1), Point(2)],
+            [Point(2), Point(3)],
         ]
 
-        service = PlayerService()
-        for player, expected in test_cases:
-            actual = service.update(player)
-            self.assertEqual(actual.score, expected.score)
+        service = ScoreService()
+        for point, expected in test_cases:
+            actual = service.update(point)
+            self.assertEqual(actual, expected)
 
 
 class TestDashboard(TestCase):
     def test_update(self):
         test_cases = [
-            [["1", "1", "1", "2", "1"], {"1": 4, "2": 1}],
-            [["2", "1", "1", "2", "2", "1", "2", "2"], {"1": 3, "2": 5}],
-            [["2", "1", "1", "2", "2", "1", "2", "1", "1", "1"], {"1": 6, "2": 4}],
+            [["1", "1", "2", "1"], {"1": Point(3), "2": Point(1)}],
+            [["2", "1", "1", "2", "2"], {"1": Point(2), "2": Point(3)}],
+            [["2", "2", "2", "1", "1", "1"], {"1": Point(3), "2": Point(3)}],
         ]
 
         for game, expected in test_cases:
