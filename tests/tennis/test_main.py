@@ -1,5 +1,36 @@
+from enum import Enum
 from unittest import TestCase
 from tennis.main import Dashboard, Umpire, TennisGame
+
+
+class Point(Enum):
+    LOVE = 0
+    FIFTEEN = 1
+    THIRTY = 2
+    FORTY = 3
+
+
+class Player:
+    def __init__(self, score: Point):
+        self.score = score
+
+
+class PlayerService:
+    def update(self, player: Player):
+        return Player(score=Point(player.score.value + 1))
+
+
+class TestPlayer(TestCase):
+    def test_add(self):
+        test_cases = [
+            [Player(score=Point(0)), Player(score=Point(1))],
+            [Player(score=Point(1)), Player(score=Point(2))],
+        ]
+
+        service = PlayerService()
+        for player, expected in test_cases:
+            actual = service.update(player)
+            self.assertEqual(actual.score, expected.score)
 
 
 class TestDashboard(TestCase):
