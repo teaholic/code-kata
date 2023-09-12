@@ -23,22 +23,26 @@ class TestDashboard(TestCase):
         for game, expected in test_cases:
             dashboard = Dashboard(game)
             actual = dashboard.update()
-            self.assertEqual(actual.player1, expected.player1)
-            self.assertEqual(actual.player2, expected.player2)
+            self.assertEqual(actual.player1.value, expected.player1.value)
+            self.assertEqual(actual.player2.value, expected.player2.value)
 
 
 class TestUmpire(TestCase):
     def test_find_winner(self):
         test_cases = [
-            [Score(player1=Point(4), player2=Point(1)), "Player 1"],
-            [Score(player1=Point(0), player2=Point(4)), "Player 2"],
-            [Score(player1=Point(5), player2=Point(3)), "Player 1"],
-            [Score(player1=Point(3), player2=Point(2)), "invalid game"],
-            [Score(player1=Point(1), player2=Point(2)), "invalid game"],
+            [Score(player1=Point.FORTY, player2=Point.FIFTEEN), "Player 1"],
+            [Score(player1=Point.LOVE, player2=Point.FORTY), "Player 2"],
+            [Score(player1=Point.ADVANTAGE, player2=Point.THIRTY), "Player 1"],
+            [Score(player1=Point.DEUCE, player2=Point.ADVANTAGE), "Player 2"],
+            [Score(player1=Point.FORTY, player2=Point.THIRTY), "invalid game"],
+            [Score(player1=Point.FIFTEEN, player2=Point.THIRTY), "invalid game"],
+            [Score(player1=Point.FORTY, player2=Point.FORTY), "invalid game"],
+            [Score(player1=Point.DEUCE, player2=Point.DEUCE), "invalid game"],
         ]
 
         umpire = Umpire()
         for scores, expected in test_cases:
+            print(scores)
             actual = umpire.find_winner(scores, ["Player 1", "Player 2"])
             self.assertEqual(actual, expected)
 

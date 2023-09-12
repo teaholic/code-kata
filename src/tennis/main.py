@@ -34,16 +34,26 @@ class Umpire:
 
     def find_winner(self, scores: Score, players: List[str]) -> str:
         ranking: Ranking = self.service.compute(scores)
+        print(ranking)
         top_scorer = ranking.top_scorer_index
         opponent = ranking.least_scorer_index
-        if scores[top_scorer].value == 4:
-            print("top_scorer has 4 points")
+        if scores[top_scorer].value == 5:
+            return players[top_scorer]
+        elif scores[top_scorer].value == 3:
+            print("top_scorer has scored at least forty")
             if scores[top_scorer].value - scores[opponent].value >= 2:
                 print("top_scorer scored at least 2 points more than opponent")
                 return players[top_scorer]
             else:
+                print(
+                    "invalid game for top scorer "
+                    + str(scores[top_scorer].value)
+                    + " and opponent "
+                    + str(scores[opponent].value)
+                )
                 return "invalid game"
         else:
+            print("invalid game for top scorer " + str(scores[top_scorer].value))
             return "invalid game"
 
 
