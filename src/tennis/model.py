@@ -8,6 +8,7 @@ class Point(Enum):
     THIRTY = 2
     FORTY = 3
     DEUCE = 4
+    ADVANTAGE = 5
 
 
 class PointService:

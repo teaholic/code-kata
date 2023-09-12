@@ -10,6 +10,12 @@ class TestScoreService(TestCase):
             [Point(1), Point(2)],
             [Point(2), Point(3)],
             [Point(3), Point(4)],
+            [Point(4), Point(5)],
+            [Point.LOVE, Point.FIFTEEN],
+            [Point.FIFTEEN, Point.THIRTY],
+            [Point.THIRTY, Point.FORTY],
+            [Point.FORTY, Point.DEUCE],
+            [Point.DEUCE, Point.ADVANTAGE],
         ]
 
         service = PointService()
