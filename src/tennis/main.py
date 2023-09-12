@@ -38,11 +38,13 @@ class Umpire:
         top_scorer = ranking.top_scorer_index
         opponent = ranking.least_scorer_index
         if scores[top_scorer].value == 5:
+            print("The winner is " + players[top_scorer])
             return players[top_scorer]
         elif scores[top_scorer].value == 3:
             print("top_scorer has scored at least forty")
             if scores[top_scorer].value - scores[opponent].value >= 2:
                 print("top_scorer scored at least 2 points more than opponent")
+                print("The winner is " + players[top_scorer])
                 return players[top_scorer]
             else:
                 print(

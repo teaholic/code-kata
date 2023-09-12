@@ -42,7 +42,6 @@ class TestUmpire(TestCase):
 
         umpire = Umpire()
         for scores, expected in test_cases:
-            print(scores)
             actual = umpire.find_winner(scores, ["Player 1", "Player 2"])
             self.assertEqual(actual, expected)
 
@@ -50,11 +49,12 @@ class TestUmpire(TestCase):
 class TestTennisGame(TestCase):
     def test_run(self):
         test_cases = [
-            [["1", "1", "1", "2", "1"], "1"],
-            [["2", "1", "1", "2", "2", "2"], "2"],
-            [["2", "1", "1", "2", "1", "1"], "1"],
+            [["1", "1", "1", "2"], "1"],
+            [["2", "1", "1", "1"], "1"],
+            [["2", "1", "1", "2", "2", "2", "2"], "2"],
             [["2", "1", "1", "2", "1", "2", "1"], "1"],
-            [["a", "b", "a", "a"], "invalid game"],
+            [["a", "b", "a"], "invalid game"],
+            [["2", "1", "1", "2", "1", "1"], "invalid game"],
         ]
 
         for game, expected in test_cases:
