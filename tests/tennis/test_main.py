@@ -88,5 +88,4 @@ class TestTennisGame(TestCase):
         for game, expected in test_cases:
             engine = TennisGame(game)
             actual = engine.run(game)
-            print(actual)
             self.assertEqual(actual, expected)
