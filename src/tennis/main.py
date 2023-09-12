@@ -51,7 +51,7 @@ class Umpire:
         top_scorer = scores.get_top_scorer()
         opponent = scores.get_least_scorer()
         if scores[top_scorer].value == 4:
-            print("top_scorer points = 4")
+            print("top_scorer has 4 points")
             if scores[top_scorer].value - scores[opponent].value >= 2:
                 print("top_scorer scored at least 2 points more than opponent")
                 return players[top_scorer]
