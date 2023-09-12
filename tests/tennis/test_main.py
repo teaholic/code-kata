@@ -14,6 +14,10 @@ class TestDashboard(TestCase):
             [["1", "1", "2", "1"], Score(player1=Point(3), player2=Point(1))],
             [["2", "1", "1", "2", "2"], Score(player1=Point(2), player2=Point(3))],
             [["2", "1", "2", "1", "2", "1"], Score(player1=Point(4), player2=Point(4))],
+            [
+                ["2", "1", "2", "1", "2", "1", "1"],
+                Score(player1=Point(5), player2=Point(4)),
+            ],
         ]
 
         for game, expected in test_cases:
@@ -28,6 +32,7 @@ class TestUmpire(TestCase):
         test_cases = [
             [Score(player1=Point(4), player2=Point(1)), "Player 1"],
             [Score(player1=Point(0), player2=Point(4)), "Player 2"],
+            [Score(player1=Point(5), player2=Point(3)), "Player 1"],
             [Score(player1=Point(3), player2=Point(2)), "invalid game"],
             [Score(player1=Point(1), player2=Point(2)), "invalid game"],
         ]
@@ -44,6 +49,7 @@ class TestTennisGame(TestCase):
             [["1", "1", "1", "2", "1"], "1"],
             [["2", "1", "1", "2", "2", "2"], "2"],
             [["2", "1", "1", "2", "1", "1"], "1"],
+            [["2", "1", "1", "2", "1", "2", "1"], "1"],
             [["a", "b", "a", "a"], "invalid game"],
         ]
 
