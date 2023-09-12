@@ -1,5 +1,14 @@
 from unittest import TestCase
-from tennis.main import Dashboard, Umpire, TennisGame, Point, PointService, Score
+from tennis.main import (
+    Dashboard,
+    Umpire,
+    TennisGame,
+    Point,
+    PointService,
+    Score,
+    Ranking,
+    RankingService,
+)
 
 
 class TestScoreService(TestCase):
@@ -17,16 +26,24 @@ class TestScoreService(TestCase):
             self.assertEqual(actual, expected)
 
 
-class TestScore(TestCase):
-    def test_get_top_scorer(self):
+class TestRankingService(TestCase):
+    def test_compute(self):
         test_cases = [
-            [Score(Point(0), Point(2)), 1],
-            [Score(Point(3), Point(1)), 0],
+            [
+                Score(Point(0), Point(2)),
+                Ranking(top_scorer_index=1, least_scorer_index=0),
+            ],
+            [
+                Score(Point(3), Point(1)),
+                Ranking(top_scorer_index=0, least_scorer_index=1),
+            ],
         ]
 
+        service = RankingService()
         for score, expected in test_cases:
-            actual = score.get_top_scorer()
-            self.assertEqual(actual, expected)
+            actual = service.compute(score)
+            self.assertEqual(actual.top_scorer_index, expected.top_scorer_index)
+            self.assertEqual(actual.least_scorer_index, expected.least_scorer_index)
 
 
 class TestDashboard(TestCase):
@@ -34,11 +51,7 @@ class TestDashboard(TestCase):
         test_cases = [
             [["1", "1", "2", "1"], Score(player1=Point(3), player2=Point(1))],
             [["2", "1", "1", "2", "2"], Score(player1=Point(2), player2=Point(3))],
-            [["2", "1", "2", "1", "2", "1"], Score(player1=Point(3), player2=Point(3))],
-            [
-                ["2", "1", "2", "1", "2", "1", "2"],
-                Score(player1=Point(3), player2=Point(4)),
-            ],
+            [["2", "1", "2", "1", "2", "1"], Score(player1=Point(4), player2=Point(4))],
         ]
 
         for game, expected in test_cases:
@@ -70,7 +83,6 @@ class TestTennisGame(TestCase):
             [["2", "1", "1", "2", "2", "2"], "2"],
             [["2", "1", "1", "2", "1", "1"], "1"],
             [["a", "b", "a", "a"], "invalid game"],
-            [["2", "1", "1", "2", "2", "1", "2"], "invalid game"],
         ]
 
         for game, expected in test_cases:

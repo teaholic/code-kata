@@ -7,11 +7,11 @@ class Point(Enum):
     FIFTEEN = 1
     THIRTY = 2
     FORTY = 3
-    WIN = 4
+    DEUCE = 4
 
 
 class PointService:
-    def update(self, point: Point):
+    def update(self, point: Point) -> Point:
         return Point(point.value + 1)
 
 
@@ -19,17 +19,18 @@ class Score(NamedTuple):
     player1: Point
     player2: Point
 
-    def get_top_scorer(self):
-        if self.player1.value > self.player2.value:
-            return 0
-        else:
-            return 1
 
-    def get_least_scorer(self):
-        if self.player1.value < self.player2.value:
-            return 0
+class Ranking(NamedTuple):
+    top_scorer_index: int
+    least_scorer_index: int
+
+
+class RankingService:
+    def compute(self, score: Score) -> Ranking:
+        if score.player1.value > score.player2.value:
+            return Ranking(top_scorer_index=0, least_scorer_index=1)
         else:
-            return 1
+            return Ranking(top_scorer_index=1, least_scorer_index=0)
 
 
 class Dashboard:
@@ -43,13 +44,28 @@ class Dashboard:
         for match_id in range(len(self.game)):
             match_winner = self.game[match_id]
             self.scores[match_winner] = self.service.update(self.scores[match_winner])
+            if self.scores[match_winner].value == 3:
+                players = set(self.game)
+                players.remove(match_winner)
+                match_looser = list(players)[0]
+                if self.scores[match_looser].value == 3:
+                    self.scores[match_winner] = self.service.update(
+                        self.scores[match_winner]
+                    )
+                    self.scores[match_looser] = self.service.update(
+                        self.scores[match_looser]
+                    )
         return Score(self.scores[self.player1], self.scores[self.player2])
 
 
 class Umpire:
+    def __init__(self):
+        self.service = RankingService()
+
     def find_winner(self, scores: Score, players: List[str]) -> str:
-        top_scorer = scores.get_top_scorer()
-        opponent = scores.get_least_scorer()
+        ranking: Ranking = self.service.compute(scores)
+        top_scorer = ranking.top_scorer_index
+        opponent = ranking.least_scorer_index
         if scores[top_scorer].value == 4:
             print("top_scorer has 4 points")
             if scores[top_scorer].value - scores[opponent].value >= 2:
