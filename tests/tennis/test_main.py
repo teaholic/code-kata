@@ -8,7 +8,23 @@ from tennis.main import (
     TennisGame,
     Point,
     Score,
+    PointRankingService,
+    PointRanking,
 )
+
+
+class TestPointRankingService(TestCase):
+    @parameterized.expand(
+        [
+            ["w", {"w", "o"}, PointRanking(winner="w", opponent="o")],
+            ["a", {"b", "a"}, PointRanking(winner="a", opponent="b")],
+        ]
+    )
+    def test_run(self, winner, players, expected):
+        service = PointRankingService()
+
+        actual = service.run(winner, players)
+        self.assertEqual(actual, expected)
 
 
 class TestDashboard(TestCase):

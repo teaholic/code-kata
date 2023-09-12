@@ -1,6 +1,17 @@
-from typing import List
+from typing import List, NamedTuple, Set
 
 from tennis.model import Point, PointService, Score, RankingService, Ranking
+
+
+class PointRanking(NamedTuple):
+    winner: str
+    opponent: str
+
+
+class PointRankingService:
+    def run(self, winner: str, players: Set[str]) -> PointRanking:
+        players.remove(winner)
+        return PointRanking(winner=winner, opponent=list(players)[0])
 
 
 class Dashboard:
@@ -8,24 +19,29 @@ class Dashboard:
         self.game = game
         [self.player1, self.player2] = set(game)
         self.scores = {self.player1: Point(0), self.player2: Point(0)}
-        self.service = PointService()
+        self.point_service = PointService()
+        self.ranking_service = PointRankingService()
 
     def update(self) -> Score:
         for match_id in range(len(self.game)):
-            match_winner = self.game[match_id]
-            self.scores[match_winner] = self.service.update(self.scores[match_winner])
-            if self.scores[match_winner].value == 3:
-                players = set(self.game)
-                players.remove(match_winner)
-                match_looser = list(players)[0]
-                if self.scores[match_looser].value == 3:
-                    self.scores[match_winner] = self.service.update(
-                        self.scores[match_winner]
-                    )
-                    self.scores[match_looser] = self.service.update(
-                        self.scores[match_looser]
-                    )
+            players: PointRanking = self.ranking_service.run(
+                self.game[match_id], set(self.game)
+            )
+            self.scores[players.winner] = self.point_service.update(
+                self.scores[players.winner]
+            )
+            self.__score_deuce(players)
         return Score(self.scores[self.player1], self.scores[self.player2])
+
+    def __score_deuce(self, players: PointRanking):
+        if self.scores[players.winner].value == 3:
+            if self.scores[players.opponent].value == 3:
+                self.scores[players.winner] = self.point_service.update(
+                    self.scores[players.winner]
+                )
+                self.scores[players.opponent] = self.point_service.update(
+                    self.scores[players.opponent]
+                )
 
 
 class Umpire:
