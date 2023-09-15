@@ -17,7 +17,7 @@ class PointRankingService:
 class Dashboard:
     def __init__(self, game):
         self.game = game
-        [self.player1, self.player2] = set(game)
+        [self.player1, self.player2] = sorted(set(game))
         self.scores = {self.player1: Point(0), self.player2: Point(0)}
         self.point_service = PointService()
         self.ranking_service = PointRankingService()
@@ -25,7 +25,7 @@ class Dashboard:
     def update(self) -> Score:
         for match_id in range(len(self.game)):
             players: PointRanking = self.ranking_service.run(
-                self.game[match_id], set(self.game)
+                self.game[match_id], sorted(set(self.game))
             )
             self.scores[players.winner] = self.point_service.update(
                 self.scores[players.winner]
@@ -82,5 +82,5 @@ class TennisGame:
 
     def run(self, game) -> str:
         return self.umpire.find_winner(
-            scores=self.dashboard.update(), players=list(set(game))
+            scores=self.dashboard.update(), players=list(sorted(set(game)))
         )
