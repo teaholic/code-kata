@@ -1,61 +1,47 @@
-from enum import Enum
-from typing import NamedTuple, List
+from typing import List, NamedTuple, Set
+
+from tennis.model import Point, PointService, Score, RankingService, Ranking
 
 
-class Point(Enum):
-    LOVE = 0
-    FIFTEEN = 1
-    THIRTY = 2
-    FORTY = 3
-    DEUCE = 4
+class PointRanking(NamedTuple):
+    winner: str
+    opponent: str
 
 
-class PointService:
-    def update(self, point: Point) -> Point:
-        return Point(point.value + 1)
-
-
-class Score(NamedTuple):
-    player1: Point
-    player2: Point
-
-
-class Ranking(NamedTuple):
-    top_scorer_index: int
-    least_scorer_index: int
-
-
-class RankingService:
-    def compute(self, score: Score) -> Ranking:
-        if score.player1.value > score.player2.value:
-            return Ranking(top_scorer_index=0, least_scorer_index=1)
-        else:
-            return Ranking(top_scorer_index=1, least_scorer_index=0)
+class PointRankingService:
+    def run(self, winner: str, players: Set[str]) -> PointRanking:
+        players.remove(winner)
+        return PointRanking(winner=winner, opponent=list(players)[0])
 
 
 class Dashboard:
     def __init__(self, game):
         self.game = game
-        [self.player1, self.player2] = set(game)
+        [self.player1, self.player2] = sorted(set(game))
         self.scores = {self.player1: Point(0), self.player2: Point(0)}
-        self.service = PointService()
+        self.point_service = PointService()
+        self.ranking_service = PointRankingService()
 
     def update(self) -> Score:
         for match_id in range(len(self.game)):
-            match_winner = self.game[match_id]
-            self.scores[match_winner] = self.service.update(self.scores[match_winner])
-            if self.scores[match_winner].value == 3:
-                players = set(self.game)
-                players.remove(match_winner)
-                match_looser = list(players)[0]
-                if self.scores[match_looser].value == 3:
-                    self.scores[match_winner] = self.service.update(
-                        self.scores[match_winner]
-                    )
-                    self.scores[match_looser] = self.service.update(
-                        self.scores[match_looser]
-                    )
+            players: PointRanking = self.ranking_service.run(
+                self.game[match_id], sorted(set(self.game))
+            )
+            self.scores[players.winner] = self.point_service.update(
+                self.scores[players.winner]
+            )
+            self.__score_deuce(players)
         return Score(self.scores[self.player1], self.scores[self.player2])
+
+    def __score_deuce(self, players: PointRanking):
+        if self.scores[players.winner].value == 3:
+            if self.scores[players.opponent].value == 3:
+                self.scores[players.winner] = self.point_service.update(
+                    self.scores[players.winner]
+                )
+                self.scores[players.opponent] = self.point_service.update(
+                    self.scores[players.opponent]
+                )
 
 
 class Umpire:
@@ -64,16 +50,28 @@ class Umpire:
 
     def find_winner(self, scores: Score, players: List[str]) -> str:
         ranking: Ranking = self.service.compute(scores)
+        print(ranking)
         top_scorer = ranking.top_scorer_index
         opponent = ranking.least_scorer_index
-        if scores[top_scorer].value == 4:
-            print("top_scorer has 4 points")
+        if scores[top_scorer].value == 5:
+            print("The winner is " + players[top_scorer])
+            return players[top_scorer]
+        elif scores[top_scorer].value == 3:
+            print("top_scorer has scored at least forty")
             if scores[top_scorer].value - scores[opponent].value >= 2:
                 print("top_scorer scored at least 2 points more than opponent")
+                print("The winner is " + players[top_scorer])
                 return players[top_scorer]
             else:
+                print(
+                    "invalid game for top scorer "
+                    + str(scores[top_scorer].value)
+                    + " and opponent "
+                    + str(scores[opponent].value)
+                )
                 return "invalid game"
         else:
+            print("invalid game for top scorer " + str(scores[top_scorer].value))
             return "invalid game"
 
 
@@ -84,5 +82,5 @@ class TennisGame:
 
     def run(self, game) -> str:
         return self.umpire.find_winner(
-            scores=self.dashboard.update(), players=list(set(game))
+            scores=self.dashboard.update(), players=list(sorted(set(game)))
         )

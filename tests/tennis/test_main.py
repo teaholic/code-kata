@@ -1,91 +1,89 @@
 from unittest import TestCase
+
+from parameterized import parameterized
+
 from tennis.main import (
     Dashboard,
     Umpire,
     TennisGame,
     Point,
-    PointService,
     Score,
-    Ranking,
-    RankingService,
+    PointRankingService,
+    PointRanking,
 )
 
 
-class TestScoreService(TestCase):
-    def test_update(self):
-        test_cases = [
-            [Point(0), Point(1)],
-            [Point(1), Point(2)],
-            [Point(2), Point(3)],
-            [Point(3), Point(4)],
+class TestPointRankingService(TestCase):
+    @parameterized.expand(
+        [
+            ["w", {"w", "o"}, PointRanking(winner="w", opponent="o")],
+            ["a", {"b", "a"}, PointRanking(winner="a", opponent="b")],
         ]
+    )
+    def test_run(self, winner, players, expected):
+        service = PointRankingService()
 
-        service = PointService()
-        for point, expected in test_cases:
-            actual = service.update(point)
-            self.assertEqual(actual, expected)
-
-
-class TestRankingService(TestCase):
-    def test_compute(self):
-        test_cases = [
-            [
-                Score(Point(0), Point(2)),
-                Ranking(top_scorer_index=1, least_scorer_index=0),
-            ],
-            [
-                Score(Point(3), Point(1)),
-                Ranking(top_scorer_index=0, least_scorer_index=1),
-            ],
-        ]
-
-        service = RankingService()
-        for score, expected in test_cases:
-            actual = service.compute(score)
-            self.assertEqual(actual.top_scorer_index, expected.top_scorer_index)
-            self.assertEqual(actual.least_scorer_index, expected.least_scorer_index)
+        actual = service.run(winner, players)
+        self.assertEqual(actual, expected)
 
 
 class TestDashboard(TestCase):
-    def test_update(self):
-        test_cases = [
-            [["1", "1", "2", "1"], Score(player1=Point(3), player2=Point(1))],
-            [["2", "1", "1", "2", "2"], Score(player1=Point(2), player2=Point(3))],
-            [["2", "1", "2", "1", "2", "1"], Score(player1=Point(4), player2=Point(4))],
+    @parameterized.expand(
+        [
+            [["1", "1", "2", "1"], Score(player1=Point.FORTY, player2=Point.FIFTEEN)],
+            [
+                ["2", "1", "1", "2", "2"],
+                Score(player1=Point.THIRTY, player2=Point.FORTY),
+            ],
+            [
+                ["2", "1", "2", "1", "2", "1"],
+                Score(player1=Point.DEUCE, player2=Point.DEUCE),
+            ],
+            [
+                ["2", "1", "2", "1", "2", "1", "1"],
+                Score(player1=Point.ADVANTAGE, player2=Point.DEUCE),
+            ],
         ]
-
-        for game, expected in test_cases:
-            dashboard = Dashboard(game)
-            actual = dashboard.update()
-            self.assertEqual(actual.player1, expected.player1)
-            self.assertEqual(actual.player2, expected.player2)
+    )
+    def test_update(self, game, expected):
+        dashboard = Dashboard(game)
+        actual = dashboard.update()
+        self.assertEqual(actual.player1.name, expected.player1.name)
+        self.assertEqual(actual.player2.name, expected.player2.name)
 
 
 class TestUmpire(TestCase):
-    def test_find_winner(self):
-        test_cases = [
-            [Score(player1=Point(4), player2=Point(1)), "Player 1"],
-            [Score(player1=Point(0), player2=Point(4)), "Player 2"],
-            [Score(player1=Point(3), player2=Point(2)), "invalid game"],
-            [Score(player1=Point(1), player2=Point(2)), "invalid game"],
-        ]
+    umpire = Umpire()
 
-        umpire = Umpire()
-        for scores, expected in test_cases:
-            actual = umpire.find_winner(scores, ["Player 1", "Player 2"])
-            self.assertEqual(actual, expected)
+    @parameterized.expand(
+        [
+            [Score(player1=Point.FORTY, player2=Point.FIFTEEN), "Player 1"],
+            [Score(player1=Point.LOVE, player2=Point.FORTY), "Player 2"],
+            [Score(player1=Point.ADVANTAGE, player2=Point.THIRTY), "Player 1"],
+            [Score(player1=Point.DEUCE, player2=Point.ADVANTAGE), "Player 2"],
+            [Score(player1=Point.FORTY, player2=Point.THIRTY), "invalid game"],
+            [Score(player1=Point.FIFTEEN, player2=Point.THIRTY), "invalid game"],
+            [Score(player1=Point.FORTY, player2=Point.FORTY), "invalid game"],
+            [Score(player1=Point.DEUCE, player2=Point.DEUCE), "invalid game"],
+        ]
+    )
+    def test_find_winner(self, scores, expected):
+        actual = self.umpire.find_winner(scores, ["Player 1", "Player 2"])
+        self.assertEqual(actual, expected)
 
 
 class TestTennisGame(TestCase):
-    def test_run(self):
-        test_cases = [
-            [["1", "1", "1", "2", "1"], "1"],
-            [["2", "1", "1", "2", "2", "2"], "2"],
-            [["2", "1", "1", "2", "1", "1"], "1"],
-            [["a", "b", "a", "a"], "invalid game"],
+    @parameterized.expand(
+        [
+            [["1", "1", "1", "2"], "1"],
+            [["2", "1", "1", "1"], "1"],
+            [["2", "1", "1", "2", "2", "2", "2"], "2"],
+            [["2", "1", "1", "2", "1", "2", "1"], "1"],
+            [["a", "b", "a"], "invalid game"],
+            [["2", "1", "1", "2", "1", "1"], "invalid game"],
         ]
-
-        for game, expected in test_cases:
-            engine = TennisGame(game)
-            actual = engine.run(game)
-            self.assertEqual(actual, expected)
+    )
+    def test_run(self, game, expected):
+        engine = TennisGame(game)
+        actual = engine.run(game)
+        self.assertEqual(actual, expected)
