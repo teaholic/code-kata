@@ -1,17 +1,19 @@
 from unittest import TestCase
 
-from src.leaderboard.main import Driver, ScoringService
+from leaderboard.main import Driver, DriverService
 
 
-class TestScoringService(TestCase):
+class TestResultService(TestCase):
     def test_score(self):
-        service = ScoringService(
-            (Driver("a", 0), Driver("b", 0), Driver("c", 0), Driver("d", 0))
-        )
+        race1 = [Driver("b", 0), Driver("a", 0), Driver("c", 0), Driver("d", 0)]
+        race2 = [Driver("b", 0), Driver("a", 0), Driver("c", 0), Driver("d", 0)]
+        service = DriverService()
 
-        expected = {Driver("a", 18), Driver("b", 25), Driver("c", 15)}
-        actual = service.score(
-            [Driver("b", 0), Driver("a", 0), Driver("c", 0), Driver("d", 0)]
-        )
-
+        expected = [
+            Driver("b", 25 + 25),
+            Driver("a", 18 + 18),
+            Driver("c", 15 + 15),
+            Driver("d", 0 + 0),
+        ]
+        actual = service.score(races=[race1, race2])
         self.assertEqual(actual, expected)
