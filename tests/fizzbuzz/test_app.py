@@ -21,7 +21,12 @@ class TestFizzBuzzApp(unittest.TestCase):
         [2, 2],
         [3, "Fizz"],
         [4, 4],
-        [5, "Buzz"]
+        [5, "Buzz"],
+        [6, "Fizz"],
+        [7, 7],
+        [8, 8],
+        [9, "Fizz"],
+        [10, "Buzz"],
     ])
     def test_run(self, input, expected):
         actual = FizzBuzzApp().run(input)
