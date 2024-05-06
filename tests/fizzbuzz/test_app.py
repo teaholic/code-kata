@@ -1,5 +1,7 @@
 import unittest
 
+from parameterized import parameterized
+
 
 class FizzBuzzApp:
 
@@ -10,6 +12,9 @@ class FizzBuzzApp:
 
 class TestFizzBuzzApp(unittest.TestCase):
 
-    def test_run(self):
-        actual = FizzBuzzApp().run(3)
-        self.assertEqual(actual, "Fizz")
+    @parameterized.expand([
+        [3, "Fizz"],
+    ])
+    def test_run(self, input, expected):
+        actual = FizzBuzzApp().run(input)
+        self.assertEqual(actual, expected)
