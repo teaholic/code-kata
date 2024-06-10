@@ -1,16 +1,24 @@
-from typing import List
+from enum import Enum
 
-from fizzbuzz.handler import Handler
+
+class Multiplier(Enum):
+    Fizz = 3
+    Buzz = 5
+    Whizz = 7
+    Bang = 11
 
 
 class FizzBuzzApp:
-    def __init__(self, handlers: List[Handler]):
-        self.handlers = handlers
 
-    def run(self, n):
-        return self._sanitize(n, [handler.handle(n) for handler in self.handlers])
+    def run(self, request:int):
+        result = self._run(request)
+        if result == "":
+            return request
+        return result
 
-    def _sanitize(self, n, res: List[str]):
-        if "".join(res) == "":
-            return n
-        return "".join(res)
+    def _run(self, request:int):
+        result = ""
+        for multiplier in Multiplier:
+            if request % multiplier.value == 0:
+                result += Multiplier(multiplier.value).name
+        return result
