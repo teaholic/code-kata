@@ -1,13 +1,16 @@
-from fizzbuzz.model import Input
+from typing import List
+
+from fizzbuzz.handler import Handler
 
 
 class FizzBuzzApp:
-    def run(self, value: int):
-        my_input = Input(value)
-        if my_input.is_multiple_of_three_and_five():
-            return "FizzBuzz"
-        elif my_input.is_multiple_of_three():
-            return "Fizz"
-        elif my_input.is_multiple_of_five():
-            return "Buzz"
-        return value
+    def __init__(self, handlers: List[Handler]):
+        self.handlers = handlers
+
+    def run(self, n):
+        return self._sanitize(n, [handler.handle(n) for handler in self.handlers])
+
+    def _sanitize(self, n, res: List[str]):
+        if "".join(res) == "":
+            return n
+        return "".join(res)
