@@ -14,10 +14,12 @@ class FizzBuzzApp:
 
     def run(self):
         n = 1
-        result = ""
-        while result != "FizzBuzzWhizzBang":
-            result = self.service.run(n)
-            print(result)
+        output = ""
+        result = []
+        while output != "FizzBuzzWhizzBang":
+            output = self.service.run(n)
+            print(output)
+            result.append(output)
             n += 1
         return result
 

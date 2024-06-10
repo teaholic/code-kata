@@ -10,7 +10,7 @@ class TestFizzBuzzApp(unittest.TestCase):
     def test_run(self):
         actual = FizzBuzzApp().run()
 
-        self.assertEqual(actual, "FizzBuzzWhizzBang")
+        self.assertEqual(len([i for i in actual if i == "FizzBuzzWhizzBang"]), 1)
 
 class TestFizzBuzzService(unittest.TestCase):
     @parameterized.expand(
