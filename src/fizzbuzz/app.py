@@ -9,6 +9,20 @@ class Multiplier(Enum):
 
 
 class FizzBuzzApp:
+    def __init__(self):
+        self.service = FizzBuzzService()
+
+    def run(self):
+        n = 1
+        result = ""
+        while result != "FizzBuzzWhizzBang":
+            result = self.service.run(n)
+            print(result)
+            n += 1
+        return result
+
+
+class FizzBuzzService:
 
     def run(self, request:int):
         result = self._run(request)
