@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, List
 
 
 class Handler(ABC):
@@ -34,3 +34,8 @@ class MultipleOfEleven(Handler):
         if request % 11 == 0:
             return "Bang"
         return ""
+
+
+class HandlerFactory:
+    def create(self) -> List[Handler]:
+        return [MultipleOfThree(), MultipleOfFive(), MultipleOfSeven(), MultipleOfEleven()]

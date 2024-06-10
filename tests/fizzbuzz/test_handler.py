@@ -2,7 +2,7 @@ import unittest
 
 from parameterized import parameterized
 
-from fizzbuzz.handler import MultipleOfThree, MultipleOfFive, MultipleOfSeven, MultipleOfEleven
+from fizzbuzz.handler import MultipleOfThree, MultipleOfFive, MultipleOfSeven, MultipleOfEleven, HandlerFactory, Handler
 
 
 class TestHandler(unittest.TestCase):

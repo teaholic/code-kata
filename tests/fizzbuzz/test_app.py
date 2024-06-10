@@ -3,7 +3,7 @@ import unittest
 from parameterized import parameterized
 
 from fizzbuzz.app import FizzBuzzApp
-from fizzbuzz.handler import MultipleOfThree, MultipleOfFive, MultipleOfSeven, MultipleOfEleven
+from fizzbuzz.handler import HandlerFactory
 
 
 class TestFizzBuzzApp(unittest.TestCase):
@@ -34,6 +34,6 @@ class TestFizzBuzzApp(unittest.TestCase):
         ]
     )
     def test_run(self, n, expected):
-        chain_of_responsibility = [MultipleOfThree(), MultipleOfFive(), MultipleOfSeven(), MultipleOfEleven()]
+        chain_of_responsibility = HandlerFactory().create()
         actual = FizzBuzzApp(chain_of_responsibility).run(n)
         self.assertEqual(actual, expected)
