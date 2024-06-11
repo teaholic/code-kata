@@ -2,7 +2,7 @@ import unittest
 
 from parameterized import parameterized
 
-from fizzbuzz.app import FizzBuzzApp, FizzBuzzService
+from fizzbuzz.app import FizzBuzzApp, FizzBuzzService, Request
 
 
 class TestFizzBuzzApp(unittest.TestCase):
@@ -40,5 +40,5 @@ class TestFizzBuzzService(unittest.TestCase):
         ]
     )
     def test_run(self, n, expected):
-        actual = FizzBuzzService().run(n)
+        actual = FizzBuzzService().run(Request(n))
         self.assertEqual(actual, expected)
