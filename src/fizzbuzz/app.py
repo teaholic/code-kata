@@ -23,7 +23,6 @@ class Result:
 
 
 class ResultFactory:
-
     @staticmethod
     def create(request) -> Result:
         result = ""
@@ -53,7 +52,7 @@ class FizzBuzzService:
     def __init__(self):
         self.factory = ResultFactory()
 
-    def run(self, request:Request):
+    def run(self, request: Request):
         result = self.factory.create(request)
         if result.value == "":
             return request.number
