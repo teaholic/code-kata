@@ -1,15 +1,20 @@
 from dataclasses import dataclass
 from enum import Enum
 
-@dataclass(frozen=True)
-class Request:
-    number: int
 
 class Multiplier(Enum):
     Fizz = 3
     Buzz = 5
     Whizz = 7
     Bang = 11
+
+
+@dataclass(frozen=True)
+class Request:
+    number: int
+
+    def is_multiple_of(self, multiplier: Multiplier) -> bool:
+        return self.number % multiplier.value == 0
 
 
 class FizzBuzzApp:
@@ -39,6 +44,6 @@ class FizzBuzzService:
     def _run(self, request:Request):
         result = ""
         for multiplier in Multiplier:
-            if request.number % multiplier.value == 0:
+            if request.is_multiple_of(multiplier):
                 result += Multiplier(multiplier.value).name
         return result
