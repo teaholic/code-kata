@@ -17,6 +17,22 @@ class Request:
         return self.number % multiplier.value == 0
 
 
+@dataclass(frozen=True)
+class Result:
+    value: str
+
+
+class ResultFactory:
+
+    @staticmethod
+    def create(request) -> Result:
+        result = ""
+        for multiplier in Multiplier:
+            if request.is_multiple_of(multiplier):
+                result += Multiplier(multiplier.value).name
+        return Result(value=result)
+
+
 class FizzBuzzApp:
     def __init__(self):
         self.service = FizzBuzzService()
@@ -34,16 +50,11 @@ class FizzBuzzApp:
 
 
 class FizzBuzzService:
+    def __init__(self):
+        self.factory = ResultFactory()
 
     def run(self, request:Request):
-        result = self._run(request)
-        if result == "":
+        result = self.factory.create(request)
+        if result.value == "":
             return request.number
-        return result
-
-    def _run(self, request:Request):
-        result = ""
-        for multiplier in Multiplier:
-            if request.is_multiple_of(multiplier):
-                result += Multiplier(multiplier.value).name
-        return result
+        return result.value
