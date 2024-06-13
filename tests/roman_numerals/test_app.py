@@ -21,7 +21,16 @@ class MyRomanNumeralsApp:
             exact_match_pos = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == min_residue_index][0]
             return [n.name for n in RomanNumerals if n.value == exact_match_pos][0]
         else:
-            return "O"
+            lower_bound_index = residues.index(min_residue)-1
+            lower_bound_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == lower_bound_index][0]
+            upper_bound_index = lower_bound_index +2
+            upper_bound_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == upper_bound_index][0]
+            lower_bound_roman = [n.name for n in RomanNumerals if n.value == lower_bound_num][0]
+            upper_bound_roman = [n.name for n in RomanNumerals if n.value == upper_bound_num][0]
+            if (upper_bound_num - number) == 1:
+                return lower_bound_roman + upper_bound_roman
+            else:
+                return "O"
 
 
 class RomanNumeralsApp:
