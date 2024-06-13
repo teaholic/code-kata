@@ -14,23 +14,51 @@ class RomanNumerals(Enum):
 
 class MyRomanNumeralsApp:
     def convert(self, number: int) -> str:
-        if number == 0 :
+        print("Number" + str(number))
+        if number == 0:
             return ""
-        else :
+        else:
             residues = [number - n.value for n in RomanNumerals]
+            print(residues)
             min_residue = min([n for n in residues if n >= 0])
+            print("Min residue" + str(min_residue))
             if min_residue == 0: # Number matches a single char roman numeral
                 min_residue_index = residues.index(min_residue)
                 exact_match_pos = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == min_residue_index][0]
+                print("Case 0")
                 return [n.name for n in RomanNumerals if n.value == exact_match_pos][0]
             else:
                 lower_bound_index = residues.index(min_residue)-1
-                print(lower_bound_index)
-                if lower_bound_index < 0:
-                    min_residue_index = 0 #residues.index(min_residue)
-                    closer_match_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == min_residue_index][0]
-                    closer_match_roman = [n.name for n in RomanNumerals if n.value == closer_match_num][0]
-                    return closer_match_roman * number
+                print("Lower bound" + str(lower_bound_index))
+                if lower_bound_index < 0: # Smaller than 5
+                    approx_match_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == 1][0]
+                    if (approx_match_num - number) == 1 : # is 4
+                        approx_match_roman = [n.name for n in RomanNumerals if n.value == approx_match_num][0]
+                        default_index = 0
+                        lower_bound_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == default_index][0]
+                        lower_bound_roman = [n.name for n in RomanNumerals if n.value == lower_bound_num][0]
+                        print("Case 0.25")
+                        return lower_bound_roman + approx_match_roman
+                    else:
+                        upper_bound_index = 2
+                        upper_bound_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == upper_bound_index][0]
+                        min_residue_index = 0  # residues.index(min_residue)
+                        closer_match_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == min_residue_index][0]
+                        print(closer_match_num)
+                        print(closer_match_num - number)
+                        if closer_match_num - number == 1:
+                            min_residue_index = residues.index(min_residue)
+                            lower_bound_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == lower_bound_index][0]
+                            lower_bound_roman = [n.name for n in RomanNumerals if n.value == lower_bound_num][0]
+                            print("Case 0.5")
+                            return upper_bound_num + lower_bound_roman * residues[min_residue_index]
+                        else:
+                            print("upper_bound_num - number" + str(upper_bound_num - number))
+                            min_residue_index = 0 #residues.index(min_residue)
+                            closer_match_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == min_residue_index][0]
+                            closer_match_roman = [n.name for n in RomanNumerals if n.value == closer_match_num][0]
+                            print("Case 1")
+                            return closer_match_roman * number
                 else:
                     lower_bound_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == lower_bound_index][0]
                     lower_bound_roman = [n.name for n in RomanNumerals if n.value == lower_bound_num][0]
@@ -38,14 +66,17 @@ class MyRomanNumeralsApp:
                     upper_bound_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == upper_bound_index][0]
                     upper_bound_roman = [n.name for n in RomanNumerals if n.value == upper_bound_num][0]
                     if (upper_bound_num - number) == 1:
+                        print("Case 2")
                         return lower_bound_roman + upper_bound_roman
                     else:
+                        print("Corner case")
                         # lower_bound_index = residues.index(min_residue) - 1
                         # lower_bound_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == lower_bound_index][0]
                         # lower_bound_roman = [n.name for n in RomanNumerals if n.value == lower_bound_num][0]
                         min_residue_index = residues.index(min_residue)
                         closer_match_num = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == min_residue_index][0]
                         closer_match_roman = [n.name for n in RomanNumerals if n.value == closer_match_num][0]
+                        print("Case 3")
                         return closer_match_roman + lower_bound_roman * residues[min_residue_index]
 
 
