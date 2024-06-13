@@ -1,6 +1,27 @@
 import unittest
+from enum import Enum
 
 from parameterized import parameterized
+
+
+class RomanNumerals(Enum):
+    I = 1
+    V = 5
+    X = 10
+    L = 50
+    C = 100
+
+
+class MyRomanNumeralsApp:
+    def convert(self, number: int) -> str:
+        residues = [number - n.value for n in RomanNumerals]
+        min_residue = min([n for n in residues if n >= 0])
+        if min_residue == 0: # Number matches a single char roman numeral
+            min_residue_index = residues.index(min_residue)
+            exact_match_pos = [num for pos, num in enumerate([n.value for n in RomanNumerals]) if pos == min_residue_index][0]
+            return [n.name for n in RomanNumerals if n.value == exact_match_pos][0]
+        else:
+            return "O"
 
 
 class RomanNumeralsApp:
@@ -71,7 +92,7 @@ class TestRomanNumeralsApp(unittest.TestCase):
     )
     def test_convert_success(self, number, expected):
 
-        self.assertEqual(RomanNumeralsApp().convert(number), expected)
+        self.assertEqual(MyRomanNumeralsApp().convert(number), expected)
 
     def test_convert_error(self):
 
