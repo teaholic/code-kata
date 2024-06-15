@@ -95,18 +95,20 @@ class NumeralApp:
         self.mapping_service = NumeralMappingService()
 
     def convert(self, number:int) -> str:
+        print(number)
         closest_greater_number_residue = NumeralService(number).get_closest_greater_number_residue()
+        print("Closest greater residue" + str(closest_greater_number_residue))
         if closest_greater_number_residue == 0:
             return self.mapping_service.get_roman_numeral(number)
         else:
-            if number < 4:
-                closest_smaller_number = NumeralService(number).get_closest_smaller_numeral_number()
+            closest_smaller_number = NumeralService(number).get_closest_smaller_numeral_number()
+            closest_greater_number = NumeralService(number).get_closest_greater_numeral_number()
+            print("Closest smaller" + str(closest_smaller_number))
+            print("Closest greater" + str(closest_greater_number))
+            if (number % closest_smaller_number == 0) & (closest_greater_number + closest_greater_number_residue != number):#number < 4:
                 return self.mapping_service.get_roman_numeral(closest_smaller_number) * round(number / closest_smaller_number)
             else:
-                closest_smaller_number = NumeralService(number).get_closest_smaller_numeral_number()
-                print(closest_smaller_number)
-                print(NumeralService(number).get_closest_greater_number_residue())
-                if NumeralService(number).get_closest_greater_number_residue() == -1:
+                if closest_greater_number_residue == -1: # add_closer_smaller_tenth
                     if closest_smaller_number == 1:
                         second_closest_smaller_number = NumeralService(
                             closest_smaller_number).get_closest_smaller_numeral_number()
@@ -144,6 +146,7 @@ class TestNumeralApp(unittest.TestCase):
             (10, "X"),
             (20, "XX"),
             (30, "XXX"),
+            (40, "XL")
         ]
     )
     def test_convert(self, number, expected):
