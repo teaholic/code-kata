@@ -9,10 +9,10 @@ class NumeralApp:
     def convert(
         self, number: int
     ) -> str:  # Todo: extract and model NumeralGateway calculations
-        closest_greater_number_residue = NumeralGateway(
+        closest_greater_number_distance = NumeralGateway(
             number, [n.value for n in RomanToArabicMapping]
-        ).get_closest_greater_residue()
-        if closest_greater_number_residue == 0:
+        ).get_closest_greater_distance()
+        if closest_greater_number_distance == 0:
             return self.mapping_service.get_roman_numeral(number)
         else:
             closest_smaller_number = NumeralGateway(
@@ -22,14 +22,14 @@ class NumeralApp:
                 number, [n.value for n in RomanToArabicMapping]
             ).get_closest_greater_number()
             if (number % closest_smaller_number == 0) & (
-                closest_greater_number + closest_greater_number_residue != number
+                closest_greater_number + closest_greater_number_distance != number
             ):  # number < 4:
                 return self.mapping_service.get_roman_numeral(
                     closest_smaller_number
                 ) * round(number / closest_smaller_number)
             else:
                 if (
-                    closest_greater_number_residue
+                    closest_greater_number_distance
                     == -NumeralGateway(
                         number, [n.value for n in RomanToArabicMapping]
                     ).get_closest_smaller_tenth()

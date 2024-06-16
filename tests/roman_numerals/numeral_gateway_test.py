@@ -10,11 +10,11 @@ class TestNumeralGateway(unittest.TestCase):
     @parameterized.expand(
         [(1, 0), (2, -3), (3, -2), (4, -1), (5, 0),]
     )
-    def test_get_closest_greater_number_residue(self, number, expected):
+    def test_get_closest_greater_number_distance(self, number, expected):
         self.assertEqual(
             NumeralGateway(
                 number, [n.value for n in RomanToArabicMapping]
-            ).get_closest_greater_residue(),
+            ).get_closest_greater_distance(),
             expected,
         )
 
