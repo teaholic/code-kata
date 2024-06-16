@@ -35,6 +35,12 @@ class NumeralService:
     def get_closest_greater_number_residue(self) -> int:
         return max([n for n in self.residues if n <= 0])
 
+    def get_closest_smaller_tenth_number(self) -> int:
+        closest_smaller_residue = min([n for n in self.residues if n >= 0])
+        closest_smaller_tenth_index = self.residues.index(closest_smaller_residue) if self.residues.index(closest_smaller_residue) % 2 == 0 else self.residues.index(closest_smaller_residue) - 1
+        print(closest_smaller_tenth_index)
+        return [num for pos, num in enumerate([n.value for n in NumeralMapping]) if pos == closest_smaller_tenth_index][0]
+
 
 class TestNumeralService(unittest.TestCase):
 
@@ -74,6 +80,29 @@ class TestNumeralService(unittest.TestCase):
     def test_get_closest_greater_numeral_number(self, number, expected):
         self.assertEqual(NumeralService(number).get_closest_greater_numeral_number(), expected)
 
+    @parameterized.expand(
+        [
+            (1, 1),
+            (2, 1),
+            (3, 1),
+            (4, 1),
+            (5, 1),
+            (6, 1),
+            (7, 1),
+            (8, 1),
+            (9, 1),
+            (10, 10),
+            (20, 10),
+            (30, 10),
+            (40, 10),
+            (50, 10),
+            (90, 10),
+            (100, 100),
+        ]
+    )
+    def test_get_closest_smaller_tenth_number(self, number, expected):
+        self.assertEqual(NumeralService(number).get_closest_smaller_tenth_number(), expected)
+
 
 class TestNumeralMappingService(unittest.TestCase):
 
@@ -108,8 +137,8 @@ class NumeralApp:
             if (number % closest_smaller_number == 0) & (closest_greater_number + closest_greater_number_residue != number):#number < 4:
                 return self.mapping_service.get_roman_numeral(closest_smaller_number) * round(number / closest_smaller_number)
             else:
-                if closest_greater_number_residue == -1: # add_closer_smaller_tenth
-                    if closest_smaller_number == 1:
+                if closest_greater_number_residue == - NumeralService(number).get_closest_smaller_tenth_number():
+                    if closest_smaller_number == NumeralService(number).get_closest_smaller_tenth_number():
                         second_closest_smaller_number = NumeralService(
                             closest_smaller_number).get_closest_smaller_numeral_number()
                     else:
