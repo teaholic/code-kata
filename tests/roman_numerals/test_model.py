@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
 
-from src.roman_numerals.model import NumeralMapping, NumeralService, NumeralMappingService
+from src.roman_numerals.model import RomanToArabicMapping, NumeralService, RomanToArabicMappingService
 
 
 class TestNumeralService(unittest.TestCase):
@@ -16,7 +16,7 @@ class TestNumeralService(unittest.TestCase):
         ]
     )
     def test_get_closest_greater_number_residue(self, number, expected):
-        self.assertEqual(NumeralService(number, [n.value for n in NumeralMapping]).get_closest_greater_number_residue(), expected)
+        self.assertEqual(NumeralService(number, [n.value for n in RomanToArabicMapping]).get_closest_greater_residue(), expected)
 
     @parameterized.expand(
         [
@@ -28,7 +28,7 @@ class TestNumeralService(unittest.TestCase):
         ]
     )
     def test_get_closest_smaller_numeral_number(self, number, expected):
-        self.assertEqual(NumeralService(number, [n.value for n in NumeralMapping]).get_closest_smaller_numeral_number(), expected)
+        self.assertEqual(NumeralService(number, [n.value for n in RomanToArabicMapping]).get_closest_smaller_number(), expected)
 
     @parameterized.expand(
         [
@@ -40,7 +40,7 @@ class TestNumeralService(unittest.TestCase):
         ]
     )
     def test_get_closest_greater_numeral_number(self, number, expected):
-        self.assertEqual(NumeralService(number, [n.value for n in NumeralMapping]).get_closest_greater_numeral_number(), expected)
+        self.assertEqual(NumeralService(number, [n.value for n in RomanToArabicMapping]).get_closest_greater_number(), expected)
 
     @parameterized.expand(
         [
@@ -63,7 +63,7 @@ class TestNumeralService(unittest.TestCase):
         ]
     )
     def test_get_closest_smaller_tenth_number(self, number, expected):
-        self.assertEqual(NumeralService(number, [n.value for n in NumeralMapping]).get_closest_smaller_tenth_number(), expected)
+        self.assertEqual(NumeralService(number, [n.value for n in RomanToArabicMapping]).get_closest_smaller_tenth(), expected)
 
 
 class TestNumeralMappingService(unittest.TestCase):
@@ -78,4 +78,4 @@ class TestNumeralMappingService(unittest.TestCase):
         ]
     )
     def test_get_roman_numeral(self, number, expected):
-        self.assertEqual(NumeralMappingService().get_roman_numeral(number), expected)
+        self.assertEqual(RomanToArabicMappingService().get_roman_numeral(number), expected)
