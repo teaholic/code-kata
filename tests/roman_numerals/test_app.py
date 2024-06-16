@@ -6,7 +6,6 @@ from src.roman_numerals.app import NumeralApp
 
 
 class TestNumeralApp(unittest.TestCase):
-
     @parameterized.expand(
         [
             (1, "I"),

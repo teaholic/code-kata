@@ -7,42 +7,38 @@ from src.roman_numerals.numeral_gateway import NumeralGateway
 
 
 class TestNumeralGateway(unittest.TestCase):
-
     @parameterized.expand(
-        [
-            (1, 0),
-            (2, -3),
-            (3, -2),
-            (4, -1),
-            (5, 0),
-        ]
+        [(1, 0), (2, -3), (3, -2), (4, -1), (5, 0),]
     )
     def test_get_closest_greater_number_residue(self, number, expected):
-        self.assertEqual(NumeralGateway(number, [n.value for n in RomanToArabicMapping]).get_closest_greater_residue(), expected)
+        self.assertEqual(
+            NumeralGateway(
+                number, [n.value for n in RomanToArabicMapping]
+            ).get_closest_greater_residue(),
+            expected,
+        )
 
     @parameterized.expand(
-        [
-            (1, 1),
-            (2, 1),
-            (3, 1),
-            (4, 1),
-            (5, 5),
-        ]
+        [(1, 1), (2, 1), (3, 1), (4, 1), (5, 5),]
     )
     def test_get_closest_smaller_numeral_number(self, number, expected):
-        self.assertEqual(NumeralGateway(number, [n.value for n in RomanToArabicMapping]).get_closest_smaller_number(), expected)
+        self.assertEqual(
+            NumeralGateway(
+                number, [n.value for n in RomanToArabicMapping]
+            ).get_closest_smaller_number(),
+            expected,
+        )
 
     @parameterized.expand(
-        [
-            (1, 1),
-            (2, 5),
-            (3, 5),
-            (4, 5),
-            (5, 5),
-        ]
+        [(1, 1), (2, 5), (3, 5), (4, 5), (5, 5),]
     )
     def test_get_closest_greater_numeral_number(self, number, expected):
-        self.assertEqual(NumeralGateway(number, [n.value for n in RomanToArabicMapping]).get_closest_greater_number(), expected)
+        self.assertEqual(
+            NumeralGateway(
+                number, [n.value for n in RomanToArabicMapping]
+            ).get_closest_greater_number(),
+            expected,
+        )
 
     @parameterized.expand(
         [
@@ -65,5 +61,9 @@ class TestNumeralGateway(unittest.TestCase):
         ]
     )
     def test_get_closest_smaller_tenth_number(self, number, expected):
-        self.assertEqual(NumeralGateway(number, [n.value for n in RomanToArabicMapping]).get_closest_smaller_tenth(), expected)
-
+        self.assertEqual(
+            NumeralGateway(
+                number, [n.value for n in RomanToArabicMapping]
+            ).get_closest_smaller_tenth(),
+            expected,
+        )
