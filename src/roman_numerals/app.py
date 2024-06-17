@@ -10,16 +10,16 @@ class NumeralApp:
         self, number: int
     ) -> str:  # Todo: extract and model NumeralGateway calculations
         closest_greater_number_distance = NumeralGateway(
-            number, [n.value for n in RomanToArabicMapping]
+            number
         ).get_closest_greater_distance()
         if closest_greater_number_distance == 0:
             return self.mapping_service.get_roman_numeral(number)
         else:
             closest_smaller_number = NumeralGateway(
-                number, [n.value for n in RomanToArabicMapping]
+                number
             ).get_closest_smaller_number()
             closest_greater_number = NumeralGateway(
-                number, [n.value for n in RomanToArabicMapping]
+                number
             ).get_closest_greater_number()
             if (number % closest_smaller_number == 0) & (
                 closest_greater_number + closest_greater_number_distance != number
@@ -31,27 +31,25 @@ class NumeralApp:
                 if (
                     closest_greater_number_distance
                     == -NumeralGateway(
-                        number, [n.value for n in RomanToArabicMapping]
-                    ).get_closest_smaller_tenth()
+                        number
+                    ).get_closest_smaller_order_of_magnitude()
                 ):
                     if (
                         closest_smaller_number
                         == NumeralGateway(
-                            number, [n.value for n in RomanToArabicMapping]
-                        ).get_closest_smaller_tenth()
+                            number
+                        ).get_closest_smaller_order_of_magnitude()
                     ):
                         second_closest_smaller_number = NumeralGateway(
-                            closest_smaller_number,
-                            [n.value for n in RomanToArabicMapping],
+                            closest_smaller_number
                         ).get_closest_smaller_number()
                     else:
                         second_closest_smaller_number = NumeralGateway(
-                            closest_smaller_number - 1,
-                            [n.value for n in RomanToArabicMapping],
+                            closest_smaller_number - 1
                         ).get_closest_smaller_number()
                     print(second_closest_smaller_number)
                     closest_greater_number = NumeralGateway(
-                        number, [n.value for n in RomanToArabicMapping]
+                        number
                     ).get_closest_greater_number()
                     return self.mapping_service.get_roman_numeral(
                         second_closest_smaller_number
@@ -64,7 +62,6 @@ class NumeralApp:
                     else:
                         second_closest_smaller_number = NumeralGateway(
                             closest_smaller_number - 1,
-                            [n.value for n in RomanToArabicMapping],
                         ).get_closest_smaller_number()
                         print(second_closest_smaller_number)
                         roman_numeral_substring = self.mapping_service.get_roman_numeral(

@@ -27,6 +27,15 @@ class TestNumeralApp(unittest.TestCase):
             (80, "LXXX"),
             (90, "XC"),
             (100, "C"),
+            (200, "CC"),
+            (300, "CCC"),
+            (400, "CD"),
+            (500, "D"),
+            (600, "DC"),
+            (700, "DCC"),
+            (800, "DCCC"),
+            (900, "CM"),
+            (1000, "M"),
         ]
     )
     def test_convert(self, number, expected):
