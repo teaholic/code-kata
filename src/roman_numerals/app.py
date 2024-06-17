@@ -57,7 +57,6 @@ class NumeralApp:
                         second_closest_smaller_number = NumeralGateway(
                             closest_smaller_number - 1,
                         ).get_closest_smaller_number()
-                        print(second_closest_smaller_number)
                         roman_numeral_substring = self.mapping_service.get_roman_numeral(
                             second_closest_smaller_number
                         ) * round(

@@ -2,7 +2,6 @@ import unittest
 
 from parameterized import parameterized
 
-from src.roman_numerals.model import RomanToArabicMapping
 from src.roman_numerals.numeral_gateway import NumeralGateway
 
 

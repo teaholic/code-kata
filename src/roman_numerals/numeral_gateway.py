@@ -5,11 +5,8 @@ from roman_numerals.model import RomanToArabicMappingService
 
 class NumeralGateway:
     def __init__(self, number: int):
-        self.number = number
         self.service = RomanToArabicMappingService()
-        self.distances = SubtractionService(
-            number=number, numeral_sequence=self.service.get_numeral_sequence()
-        ).run()
+        self.distances = [number - n for n in self.service.get_numeral_sequence()]
 
     def get_closest_smaller_number(self) -> int:
         closest_smaller_distance = min([n for n in self.distances if n >= 0])
@@ -30,12 +27,3 @@ class NumeralGateway:
         return self.service.get_closest_smaller_order_of_magnitude(
             self.distances.index(closest_smaller_distance)
         )
-
-
-class SubtractionService:
-    def __init__(self, number: int, numeral_sequence: List[int]):
-        self.number = number
-        self.numeral_sequence = numeral_sequence
-
-    def run(self) -> List[int]:
-        return [self.number - n for n in self.numeral_sequence]
