@@ -15,12 +15,8 @@ class NumeralApp:
         if closest_greater_number_distance == 0:
             return self.mapping_service.get_roman_numeral(number)
         else:
-            closest_smaller_number = NumeralGateway(
-                number
-            ).get_closest_smaller_number()
-            closest_greater_number = NumeralGateway(
-                number
-            ).get_closest_greater_number()
+            closest_smaller_number = NumeralGateway(number).get_closest_smaller_number()
+            closest_greater_number = NumeralGateway(number).get_closest_greater_number()
             if (number % closest_smaller_number == 0) & (
                 closest_greater_number + closest_greater_number_distance != number
             ):  # number < 4:
@@ -30,9 +26,7 @@ class NumeralApp:
             else:
                 if (
                     closest_greater_number_distance
-                    == -NumeralGateway(
-                        number
-                    ).get_closest_smaller_order_of_magnitude()
+                    == -NumeralGateway(number).get_closest_smaller_order_of_magnitude()
                 ):
                     if (
                         closest_smaller_number

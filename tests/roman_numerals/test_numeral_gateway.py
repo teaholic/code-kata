@@ -7,14 +7,12 @@ from src.roman_numerals.numeral_gateway import NumeralGateway
 
 
 class TestNumeralGateway(unittest.TestCase):
-
     @parameterized.expand(
         [(1, 0), (2, -3), (3, -2), (4, -1), (5, 0),]
     )
     def test_get_closest_greater_number_distance(self, number, expected):
         self.assertEqual(
-            NumeralGateway(number).get_closest_greater_distance(),
-            expected,
+            NumeralGateway(number).get_closest_greater_distance(), expected,
         )
 
     @parameterized.expand(
@@ -22,8 +20,7 @@ class TestNumeralGateway(unittest.TestCase):
     )
     def test_get_closest_smaller_numeral_number(self, number, expected):
         self.assertEqual(
-            NumeralGateway(number).get_closest_smaller_number(),
-            expected,
+            NumeralGateway(number).get_closest_smaller_number(), expected,
         )
 
     @parameterized.expand(
@@ -31,8 +28,7 @@ class TestNumeralGateway(unittest.TestCase):
     )
     def test_get_closest_greater_numeral_number(self, number, expected):
         self.assertEqual(
-            NumeralGateway(number).get_closest_greater_number(),
-            expected,
+            NumeralGateway(number).get_closest_greater_number(), expected,
         )
 
     @parameterized.expand(
@@ -57,6 +53,5 @@ class TestNumeralGateway(unittest.TestCase):
     )
     def test_et_closest_smaller_order_of_magnitude(self, number, expected):
         self.assertEqual(
-            NumeralGateway(number).get_closest_smaller_order_of_magnitude(),
-            expected,
+            NumeralGateway(number).get_closest_smaller_order_of_magnitude(), expected,
         )

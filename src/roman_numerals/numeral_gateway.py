@@ -27,7 +27,9 @@ class NumeralGateway:
 
     def get_closest_smaller_order_of_magnitude(self) -> int:
         closest_smaller_distance = min([n for n in self.distances if n >= 0])
-        return self.service.get_closest_smaller_order_of_magnitude(self.distances.index(closest_smaller_distance))
+        return self.service.get_closest_smaller_order_of_magnitude(
+            self.distances.index(closest_smaller_distance)
+        )
 
 
 class SubtractionService:
