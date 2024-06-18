@@ -15,25 +15,16 @@ class ArabicNumber:
     def has_one_digit_roman_match(self) -> bool:
         return self.api.get_closest_greater_distance() == 0
 
-    def is_smaller_than_four(self) -> bool:
-        closest_smaller_number = self.api.get_closest_smaller_number()
-        closest_greater_number = self.api.get_closest_greater_number()
-        closest_greater_number_distance = self.api.get_closest_greater_distance()
-        return (self.number % closest_smaller_number == 0) & (
-                closest_greater_number + closest_greater_number_distance != self.number
-            )
-
-    def case_3(self) -> bool:
+    def case_2(self) -> bool:
         closest_greater_number_distance = self.api.get_closest_greater_distance()
         return (
             closest_greater_number_distance
             == -self.api.get_closest_smaller_order_of_magnitude()
         )
 
-    def case_4(self) -> bool:
+    def case_3(self) -> bool:
         closest_smaller_number = self.api.get_closest_smaller_number()
         return self.number % closest_smaller_number == 0
-
 
 
 class NumeralConversion:
@@ -44,16 +35,11 @@ class NumeralConversion:
         self.number_api = ArabicNumber(number)
 
     def run(self) -> str:
-        if self.number_api.has_one_digit_roman_match():  # closest_greater_number_distance == 0:
+        if self.number_api.has_one_digit_roman_match():
             return self.mapping_service.get_roman_numeral(self.number)
-        elif self.number_api.is_smaller_than_four():  # number < 4:
-            closest_smaller_number = self.api.get_closest_smaller_number()
-            return self.mapping_service.get_roman_numeral(
-                closest_smaller_number
-            ) * round(self.number / closest_smaller_number)
+        elif self.number_api.case_2():
+            return self._convert_case_2()
         elif self.number_api.case_3():
-            return self._convert_case_3()
-        elif self.number_api.case_4():
             closest_smaller_number = self.api.get_closest_smaller_number()
             return self.mapping_service.get_roman_numeral(
                 closest_smaller_number
@@ -66,22 +52,16 @@ class NumeralConversion:
             roman_numeral_substring = self.mapping_service.get_roman_numeral(
                 second_closest_smaller_number
             ) * round(
-                (self.number - closest_smaller_number)
-                / second_closest_smaller_number
+                (self.number - closest_smaller_number) / second_closest_smaller_number
             )
             return (
-                self.mapping_service.get_roman_numeral(
-                    closest_smaller_number
-                )
+                self.mapping_service.get_roman_numeral(closest_smaller_number)
                 + roman_numeral_substring
             )
 
-    def _convert_case_3(self):
+    def _convert_case_2(self):
         closest_smaller_number = self.api.get_closest_smaller_number()
-        if (
-                closest_smaller_number
-                == self.api.get_closest_smaller_order_of_magnitude()
-        ):
+        if closest_smaller_number == self.api.get_closest_smaller_order_of_magnitude():
             second_closest_smaller_number = NumeralGateway(
                 closest_smaller_number
             ).get_closest_smaller_number()
@@ -89,7 +69,6 @@ class NumeralConversion:
             second_closest_smaller_number = NumeralGateway(
                 closest_smaller_number - 1
             ).get_closest_smaller_number()
-        print(second_closest_smaller_number)
         closest_greater_number = self.api.get_closest_greater_number()
         return self.mapping_service.get_roman_numeral(
             second_closest_smaller_number
