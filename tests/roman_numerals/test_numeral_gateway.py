@@ -2,16 +2,22 @@ import unittest
 
 from parameterized import parameterized
 
+from src.roman_numerals.model import RomanToArabicMapping
 from src.roman_numerals.numeral_gateway import NumeralDescriptor
 
 
 class TestNumeralGateway(unittest.TestCase):
+    numeral_sequence = [n.value for n in RomanToArabicMapping]
+
     @parameterized.expand(
         [(1, 0), (2, -3), (3, -2), (4, -1), (5, 0),]
     )
     def test_get_closest_greater_number_distance(self, number, expected):
         self.assertEqual(
-            NumeralDescriptor(number).get_closest_greater_distance(), expected,
+            NumeralDescriptor(
+                number, self.numeral_sequence
+            ).get_closest_greater_distance(),
+            expected,
         )
 
     @parameterized.expand(
@@ -19,7 +25,10 @@ class TestNumeralGateway(unittest.TestCase):
     )
     def test_get_closest_smaller_numeral_number(self, number, expected):
         self.assertEqual(
-            NumeralDescriptor(number).get_closest_smaller_number(), expected,
+            NumeralDescriptor(
+                number, self.numeral_sequence
+            ).get_closest_smaller_number(),
+            expected,
         )
 
     @parameterized.expand(
@@ -27,7 +36,10 @@ class TestNumeralGateway(unittest.TestCase):
     )
     def test_get_closest_greater_numeral_number(self, number, expected):
         self.assertEqual(
-            NumeralDescriptor(number).get_closest_greater_number(), expected,
+            NumeralDescriptor(
+                number, self.numeral_sequence
+            ).get_closest_greater_number(),
+            expected,
         )
 
     @parameterized.expand(
@@ -52,6 +64,8 @@ class TestNumeralGateway(unittest.TestCase):
     )
     def test_et_closest_smaller_order_of_magnitude(self, number, expected):
         self.assertEqual(
-            NumeralDescriptor(number).get_closest_smaller_order_of_magnitude(),
+            NumeralDescriptor(
+                number, self.numeral_sequence
+            ).get_closest_smaller_order_of_magnitude(),
             expected,
         )

@@ -7,7 +7,7 @@ from src.roman_numerals.handler import (
     BeforeGreaterMatchHandler,
 )
 from src.roman_numerals.numeral_gateway import NumeralDescriptor
-from src.roman_numerals.model import RomanToArabicMappingService
+from src.roman_numerals.model import RomanToArabicMappingService, RomanToArabicMapping
 
 
 class NumeralConversionApp:
@@ -19,6 +19,8 @@ class NumeralConversionApp:
             BeforeGreaterMatchHandler(),
             ErrorHandler(),
         ]
+        roman_numeral_sequence = [n.value for n in RomanToArabicMapping]
         return ArabicToRomanNumeralService(handlers).convert(
-            NumeralDescriptor(arabic_number), RomanToArabicMappingService()
+            NumeralDescriptor(arabic_number, roman_numeral_sequence),
+            RomanToArabicMappingService(),
         )

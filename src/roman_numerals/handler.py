@@ -47,15 +47,7 @@ class BeforeExactMatchHandler(Handler):
         return res
 
     def handle(self, request: NumeralDescriptor, mapping) -> str:
-        closest_smaller_number = request.get_closest_smaller_number()
-        if closest_smaller_number == request.get_closest_smaller_order_of_magnitude():
-            second_closest_smaller_number = NumeralDescriptor(
-                closest_smaller_number
-            ).get_closest_smaller_number()
-        else:
-            second_closest_smaller_number = NumeralDescriptor(
-                closest_smaller_number - 1
-            ).get_closest_smaller_number()
+        second_closest_smaller_number = request.get_second_smaller_number()
         closest_greater_number = request.get_closest_greater_number()
         return mapping.get_roman_numeral(
             second_closest_smaller_number
@@ -86,9 +78,7 @@ class BeforeGreaterMatchHandler(Handler):
 
     def handle(self, request: NumeralDescriptor, mapping) -> str:
         closest_smaller_number = request.get_closest_smaller_number()
-        second_closest_smaller_number = NumeralDescriptor(
-            closest_smaller_number - 1,
-        ).get_closest_smaller_number()
+        second_closest_smaller_number = request.get_second_smaller_number()
         roman_numeral_substring = mapping.get_roman_numeral(
             second_closest_smaller_number
         ) * round(
@@ -104,5 +94,4 @@ class ErrorHandler(Handler):
         return True
 
     def handle(self, request: NumeralDescriptor, mapping) -> str:
-        print("Error handler")
         return f"Unsupported request {request.value}"
