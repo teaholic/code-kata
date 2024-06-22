@@ -1,12 +1,17 @@
-from typing import List
+from functools import cached_property
 
 from roman_numerals.model import RomanToArabicMappingService
 
 
-class NumeralGateway:
+class NumeralDescriptor:
     def __init__(self, number: int):
+        self.number = number
         self.service = RomanToArabicMappingService()
         self.distances = [number - n for n in self.service.get_numeral_sequence()]
+
+    @cached_property
+    def value(self) -> int:
+        return self.number
 
     def get_closest_smaller_number(self) -> int:
         closest_smaller_distance = min([n for n in self.distances if n >= 0])

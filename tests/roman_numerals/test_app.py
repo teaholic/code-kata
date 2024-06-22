@@ -2,7 +2,7 @@ import unittest
 
 from parameterized import parameterized
 
-from src.roman_numerals.app import NumeralApp
+from src.roman_numerals.app import NumeralConversionApp
 
 
 class TestNumeralApp(unittest.TestCase):
@@ -39,4 +39,4 @@ class TestNumeralApp(unittest.TestCase):
         ]
     )
     def test_convert(self, number, expected):
-        self.assertEqual(NumeralApp().convert(number), expected)
+        self.assertEqual(NumeralConversionApp().convert(number), expected)
