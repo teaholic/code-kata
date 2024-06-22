@@ -2,7 +2,7 @@ from functools import cached_property
 from typing import List
 
 
-class NumeralDescriptor:
+class DecimalSystem:
     def __init__(self, number: int, numeral_sequence: List[int]):
         self.number = number
         self.numeral_sequence = numeral_sequence
@@ -21,10 +21,10 @@ class NumeralDescriptor:
     def get_second_smaller_number(self) -> int:
         closest_smaller_number = self.get_closest_smaller_number()
         if closest_smaller_number == self.get_closest_smaller_order_of_magnitude():
-            return NumeralDescriptor(
+            return DecimalSystem(
                 closest_smaller_number, self.numeral_sequence
             ).get_closest_smaller_number()
-        return NumeralDescriptor(
+        return DecimalSystem(
             closest_smaller_number - 1, self.numeral_sequence
         ).get_closest_smaller_number()
 

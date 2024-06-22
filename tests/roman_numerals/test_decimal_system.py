@@ -2,11 +2,11 @@ import unittest
 
 from parameterized import parameterized
 
-from src.roman_numerals.model import RomanToArabicMapping
-from src.roman_numerals.numeral_gateway import NumeralDescriptor
+from src.roman_numerals.mapping import RomanToArabicMapping
+from src.roman_numerals.decimal_system import DecimalSystem
 
 
-class TestNumeralGateway(unittest.TestCase):
+class TestDecimalSystem(unittest.TestCase):
     numeral_sequence = [n.value for n in RomanToArabicMapping]
 
     @parameterized.expand(
@@ -14,9 +14,7 @@ class TestNumeralGateway(unittest.TestCase):
     )
     def test_get_closest_greater_number_distance(self, number, expected):
         self.assertEqual(
-            NumeralDescriptor(
-                number, self.numeral_sequence
-            ).get_closest_greater_distance(),
+            DecimalSystem(number, self.numeral_sequence).get_closest_greater_distance(),
             expected,
         )
 
@@ -25,9 +23,7 @@ class TestNumeralGateway(unittest.TestCase):
     )
     def test_get_closest_smaller_numeral_number(self, number, expected):
         self.assertEqual(
-            NumeralDescriptor(
-                number, self.numeral_sequence
-            ).get_closest_smaller_number(),
+            DecimalSystem(number, self.numeral_sequence).get_closest_smaller_number(),
             expected,
         )
 
@@ -36,9 +32,7 @@ class TestNumeralGateway(unittest.TestCase):
     )
     def test_get_closest_greater_numeral_number(self, number, expected):
         self.assertEqual(
-            NumeralDescriptor(
-                number, self.numeral_sequence
-            ).get_closest_greater_number(),
+            DecimalSystem(number, self.numeral_sequence).get_closest_greater_number(),
             expected,
         )
 
@@ -62,9 +56,9 @@ class TestNumeralGateway(unittest.TestCase):
             (100, 100),
         ]
     )
-    def test_et_closest_smaller_order_of_magnitude(self, number, expected):
+    def test_get_closest_smaller_order_of_magnitude(self, number, expected):
         self.assertEqual(
-            NumeralDescriptor(
+            DecimalSystem(
                 number, self.numeral_sequence
             ).get_closest_smaller_order_of_magnitude(),
             expected,
