@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
 
-from src.roman_numerals.mapping import ArabicRomanMappingService
+from src.roman_numerals.mapping import ArabicMappingService
 
 
 class TestArabicRomanMappingService(unittest.TestCase):
@@ -10,5 +10,8 @@ class TestArabicRomanMappingService(unittest.TestCase):
     )
     def test_get_roman_numeral(self, number, expected):
         self.assertEqual(
-            ArabicRomanMappingService().get_roman_numeral(number), expected
+            ArabicMappingService([1, 5, 10, 50, 100, 500, 1000]).get_roman_numeral(
+                number
+            ),
+            expected,
         )

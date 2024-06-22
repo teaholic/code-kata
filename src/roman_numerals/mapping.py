@@ -11,11 +11,10 @@ class RomanToArabicMapping(Enum):
     M = 1000
 
 
-class ArabicRomanMappingService:
-    def __init__(self):
-        self.enumerated_numeral_sequence = list(
-            enumerate([n.value for n in RomanToArabicMapping])
-        )
+class ArabicMappingService:
+    def __init__(self, numeral_sequence):
+        self.roman_numerals = ["I", "V", "X", "L", "C", "D", "M"]
+        self.mapping = list(zip(numeral_sequence, self.roman_numerals))
 
     def get_roman_numeral(self, arabic_numeral) -> str:
-        return [n.name for n in RomanToArabicMapping if n.value == arabic_numeral][0]
+        return [r for n, r in self.mapping if n == arabic_numeral][0]
